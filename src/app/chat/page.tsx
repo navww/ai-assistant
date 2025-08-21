@@ -94,7 +94,6 @@ export default function ChatPage() {
 
           // Handle the stream
           const reader = stream.getReader();
-          const decoder = new TextDecoder();
           let fullResponse = '';
           const assistantMessageId = Date.now().toString();
 
@@ -111,11 +110,11 @@ export default function ChatPage() {
             if (done) {
               break;
             }
-            fullResponse += decoder.decode(value, { stream: true });
+            fullResponse += value;
             setMessages(currentMessages => {
               const lastMessage = currentMessages[currentMessages.length - 1];
               if (lastMessage.id === assistantMessageId) {
-                const updatedMessage = {
+                const updatedMessage: UIMessage = {
                   ...lastMessage,
                   parts: [{ type: 'text', text: fullResponse }],
                 };
